@@ -1,23 +1,36 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-author: "Jerry Currie"
-date: "2015-02-12"
-output:  
-  html_document: 
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
+Jerry Currie  
+2015-02-12  
 
 ## Load Libraries
 - dplyr
 - lubridate
 - timeDate
-```{r}
+
+```r
 library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+## 
+## The following object is masked from 'package:stats':
+## 
+##     filter
+## 
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
 library(lubridate)
 library(timeDate)
 ```
 ## Loading and preprocessing the data
-```{r}
+
+```r
 #Read data file 
 dfactivity<-read.csv("activity.csv")
 dfactivity$id<-1:nrow(dfactivity)
@@ -31,23 +44,25 @@ sumsteps<-summarise(grp, sum=sum(steps)) #sum steps by day
 #Calclate mean and median outputs
 meanperday<-mean(sumsteps$sum)  #calculate mean steps per day
 medianperday<-median(sumsteps$sum) #calculate median steps per day
-
-
 ```
 
 ## What is mean total number of steps taken per day?
 Calculate mean totals number of steps taken per day
 excluding NAs and place into variable named mnsteps.
 
-```{r}
+
+```r
 #histogram of steps per day
 hist(sumsteps$sum, main="Steps per day",ylab="Frequency", xlab="Steps", breaks=nrow(sumsteps), col="red")
 ```
- 
-- The average (mean) number of steps is <b>`r format(meanperday, big.mark=",")`</b> over `r nrow(sumsteps)` days.
-- The median number of steps is <b>`r format(medianperday, big.mark=",")`</b> over `r nrow(sumsteps)` days.
 
-```{r}
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+ 
+- The average (mean) number of steps is <b>10,766.19</b> over 53 days.
+- The median number of steps is <b>10,765</b> over 53 days.
+
+
+```r
 grp2<-group_by(dfactnaf,interval) #Group by interval
 sumstepsinterval<-summarise(grp2, sum=sum(steps)) #average steps by interval
 sumstepsinterval$avgstepperday<-sumstepsinterval$sum/nrow(sumsteps)
@@ -71,22 +86,25 @@ tcvt<-strftime(t, format = "%I:%M:%S %p")
 
 ## What is the average daily activity pattern?
 ### Weekday Activity
-There are `r nrow(sumstepsinterval)` 5-minute time intervals ranging from 0 to 2355. The x-axis corresponds to the specific interval break points found in the data set.
-```{r}
+There are 288 5-minute time intervals ranging from 0 to 2355. The x-axis corresponds to the specific interval break points found in the data set.
+
+```r
 plot(sumstepsinterval$avgstepperday,type="l", xaxt="n",  xlab="5-minute step intervals", ylab="Avg steps per day", main="Average Daily Activity")
 axis(1, at=c(1,49,97,145,193,241,288), labels=c("12:00 am","4:00","8:00","12:00 pm","4:00","8:00","12:00 am"))
- 
 ```
 
-- The time inteval ''`r paste(maxavgstepperday$interval,maxavgstepperday$interval+5,sep="-")`'' contains the highest average number of steps at: <b>`r round(maxavgstepperday$avgstepperday,2)`</b> per day
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
 
-- The most popular time of day for stepping is:<b> `r tcvt`</b>.
+- The time inteval ''835-840'' contains the highest average number of steps at: <b>206.17</b> per day
+
+- The most popular time of day for stepping is:<b> 08:35:00 AM</b>.
 
 (note: The data contains 12 5-minute groups per hour (0-55). After reaching the 12th member of the group (interval ending in 55), the interval's hundred digit is incremented representing the current hour (i.e. The interval 100=1:00 am, 105=1:05 am ... 2355 = 11:55 pm.))
 
  
 ## Imputing missing values
-```{r}
+
+```r
 #Get NA count from original data set
 sumna<-sum(is.na(dfactivity$step))
 #Create NA subset of dfactivity
@@ -99,12 +117,12 @@ ajoin$steps<-ajoin$avgstepperday
 #version of the original data set (dfactivity)
 tempactivity<-rbind(dfactnaf, ajoin[,c(1:4)])
 newactivity<-arrange(tempactivity, id) 
-  
 ```
-- There are <b>`r sumna`</b> missing values (NAs) in the main data set of <b>`r nrow(dfactivity)`</b> records.
+- There are <b>2304</b> missing values (NAs) in the main data set of <b>17568</b> records.
 
 Create data for Histogram containing average step values for all NAs in original data set.
-```{r}
+
+```r
 #Populate variables for histogram and averages
 grp3 <- group_by(newactivity, date) #Group by date
 sumsteps3<-summarise(grp3, sum=sum(steps)) #sum steps by day
@@ -115,16 +133,19 @@ medianperday3<-median(sumsteps3$sum) #calculate median steps per day
 ```
 
 
-```{r}
+
+```r
 #histogram of steps per day
 hist(sumsteps3$sum, main="Steps per day",ylab="Frequency", xlab="Steps", breaks=nrow(sumsteps3), col="red") 
-
 ```
-- The average (mean) number of steps is <b>`r format(meanperday3, big.mark=",")`</b> over `r nrow(sumsteps3)` days.
-- The median number of steps is <b>`r format(medianperday3, big.mark=",")`</b> over `r nrow(sumsteps3)` days.
+
+![](PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
+- The average (mean) number of steps is <b>10,766.19</b> over 61 days.
+- The median number of steps is <b>10,766.19</b> over 61 days.
 
 ## Are there differences in activity patterns between weekdays and weekends?
-```{r}
+
+```r
 #Create field for identifying weekdays and weekend (True for )
 newactivity$weekday[isWeekday(newactivity$date) == T] <- "Weekday"
 newactivity$weekday[isWeekday(newactivity$date) == F] <- "Weekend"
