@@ -47,8 +47,9 @@ medianperday<-median(sumsteps$sum) #calculate median steps per day
 ```
 
 ## What is mean total number of steps taken per day?
-Calculate mean totals number of steps taken per day
-excluding NAs and place into variable named mnsteps.
+The histogram (below) shows number of steps per day grouped into clusters.
+The frequency represents the number of times data fell into each
+cluster.
 
 
 ```r
@@ -146,10 +147,73 @@ hist(sumsteps3$sum, main="Steps per day",ylab="Frequency", xlab="Steps", breaks=
 ## Are there differences in activity patterns between weekdays and weekends?
 
 ```r
-#Create field for identifying weekdays and weekend (True for )
+#Create field for identifying weekdays and weekend (weekday)
 newactivity$weekday[isWeekday(newactivity$date) == T] <- "Weekday"
 newactivity$weekday[isWeekday(newactivity$date) == F] <- "Weekend"
+#create data frames separating weekday and weekends
+dfweekend<-newactivity[which(newactivity[, 5] == "Weekend"), ]
+dfweekday<-newactivity[which(newactivity[, 5] == "Weekday"), ]
 ```
 
 
 
+
+
+```r
+grp4<-group_by(dfweekend,interval) #Group by interval
+wesumstepsinterval<-summarise(grp4, sum=sum(steps)) #average steps by interval
+wesumstepsinterval$avgstepperdaywe<-wesumstepsinterval$sum/nrow(sumsteps)
+#build interval string for time by additing 10000 to each interval.
+#this will allows taking the 2&3 values as hours and the 4&5 values
+#as minutes without incurring an error from the earlier time intervals.
+wesumstepsinterval$K<-wesumstepsinterval$interval+10000 
+#Get max avg step per day info 
+maxavgstepperday3<-wesumstepsinterval[which(wesumstepsinterval[, 3] == max(wesumstepsinterval$avgstepperdaywe)), ]
+```
+
+
+
+```r
+grp5<-group_by(dfweekday,interval) #Group by interval
+wdsumstepsinterval<-summarise(grp5, sum=sum(steps)) #average steps by interval
+wdsumstepsinterval$avgstepperdaywd<-wdsumstepsinterval$sum/nrow(sumsteps)
+#build interval string for time by additing 10000 to each interval.
+#this will allows taking the 2&3 values as hours and the 4&5 values
+#as minutes without incurring an error from the earlier time intervals.
+wdsumstepsinterval$K<-wdsumstepsinterval$interval+10000 
+#Get max avg step per day info 
+maxavgstepperday4<-wdsumstepsinterval[which(wdsumstepsinterval[, 3] == max(wdsumstepsinterval$avgstepperdaywd)), ]
+```
+
+
+
+
+ 
+
+```r
+##################  Plot 4 Charts ###########################################
+#plot 4) - 4 line plots on single image
+ 
+#attach(sumstepsintervalwd)
+par(mfrow=c(2,1))
+par(pin=c(5,1.5))
+#First plot Weekend scaled to maximum weekday
+plot(wesumstepsinterval$avgstepperdaywe,type="l", ylim=c(0,max(wdsumstepsinterval$avgstepperdaywd)), xaxt="n",  xlab="5-minute step intervals", ylab="Avg steps per day", main="Average Weekend Daily Activity")
+axis(1, at=c(1,49,97,145,193,241,288), labels=c("12:00 am","4:00","8:00","12:00 pm","4:00","8:00","12:00 am"))
+#Second plot weekday
+plot(wdsumstepsinterval$avgstepperdaywd,type="l", xaxt="n",  xlab="5-minute step intervals", ylab="Avg steps per day", main="Average Weekday Daily Activity")
+axis(1, at=c(1,49,97,145,193,241,288), labels=c("12:00 am","4:00","8:00","12:00 pm","4:00","8:00","12:00 am"))
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
+
+```r
+##################  End Plot 4 Charts ######################################
+```
+
+
+
+
+
+
+ 
