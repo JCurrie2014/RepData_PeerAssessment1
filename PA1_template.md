@@ -155,7 +155,9 @@ The histogram (below) shows number of steps per day grouped into clusters.
 The frequency represents the number of times data fell into each
 cluster.
 
-The mean and median steps per day are also computed. 
+- The average (mean) number of steps is <b>10,766.19</b> over 53 days.
+- The median number of steps is <b>10,765</b> over 53 days.
+
 
 
 ```r
@@ -166,13 +168,18 @@ hist(sumsteps$sum, main="Steps per day\n (Histogram without NAs)",ylab="Frequenc
 
 ![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
-- The average (mean) number of steps is <b>10,766.19</b> over 53 days.
-- The median number of steps is <b>10,765</b> over 53 days.
 
 
 ## What is the average daily activity pattern?
 ### Weekday Activity
 There are 288 5-minute time intervals ranging from 0 to 2355. The x-axis corresponds to the specific interval break points found in the data set. NAs have been excluded from the computation.
+
+- The time inteval ''835-840'' contains the highest average number of steps at: <b>206.17</b> per day
+
+- The most popular time of day for stepping is:<b> 08:35:00 AM</b>.
+
+(note: The data contains 12 5-minute groups per hour (0-55). After reaching the 12th member of the group (interval ending in 55), the interval's hundred digit is incremented representing the current hour (i.e. The interval 100=1:00 am, 105=1:05 am ... 2355 = 11:55 pm.))
+
 
 ```r
 # 2) ####  Average steps per 5-minute time interval #################
@@ -182,18 +189,16 @@ axis(1, at=c(1,49,97,145,193,241,288), labels=c("12:00 am","4:00","8:00","12:00 
 
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
 
-- The time inteval ''835-840'' contains the highest average number of steps at: <b>206.17</b> per day
 
-- The most popular time of day for stepping is:<b> 08:35:00 AM</b>.
-
-(note: The data contains 12 5-minute groups per hour (0-55). After reaching the 12th member of the group (interval ending in 55), the interval's hundred digit is incremented representing the current hour (i.e. The interval 100=1:00 am, 105=1:05 am ... 2355 = 11:55 pm.))
 
  
 ## Imputing missing values
-- There are <b>2304</b> missing values (NAs) in the main data set of <b>17568</b> records.
+Here's a Histogram containing average step values for all NAs in original data set.NA were replaced with the average (mean) steps per interval.
 
-Create data for Histogram containing average step values for all NAs in original data set.NA were replaced with
-the average (mean) steps per interval.
+- There are <b>2304</b> missing values (NAs) in the main data set of <b>17568</b> records.
+- The average (mean) number of steps is <b>10,766.19</b> over 61 days.
+- The median number of steps is <b>10,766.19</b> over 61 days.
+
 
 
 ```r
@@ -204,11 +209,9 @@ hist(sumsteps3$sum, main="Steps per day\n (NAs replaced with imputed values)",yl
 
 ![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
 
-- The average (mean) number of steps is <b>10,766.19</b> over 61 days.
-- The median number of steps is <b>10,766.19</b> over 61 days.
 
 ## Are there differences in activity patterns between weekdays and weekends?
-There were a lot more steps taken during the week than the weekend. The y-axis on
+There were a lot more steps taken during the week than on the weekend. The y-axis on
 the weekend plot uses the max average steps from the weekday data to show true
 relationship.
 
@@ -218,7 +221,7 @@ relationship.
 ##################  Plot 4 Charts ###########################################
 # 4) ####  Create Weedend & Weekday plots ##########################
 par(mfrow=c(2,1))
-par(pin=c(5,1))
+par(pin=c(5,.8))
 #First plot Weekend scaled to maximum weekday
 plot(wesumstepsinterval$avgstepperdaywe,type="l", ylim=c(0,max(wdsumstepsinterval$avgstepperdaywd)), xaxt="n",  xlab="5-minute step intervals", ylab="Avg steps per day", main="Average Weekend Daily Activity\n (NAs replaced with imputed values) ")
 axis(1, at=c(1,49,97,145,193,241,288), labels=c("12:00 am","4:00","8:00","12:00 pm","4:00","8:00","12:00 am"))

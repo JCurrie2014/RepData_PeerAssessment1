@@ -143,7 +143,9 @@ The histogram (below) shows number of steps per day grouped into clusters.
 The frequency represents the number of times data fell into each
 cluster.
 
-The mean and median steps per day are also computed. 
+- The average (mean) number of steps is <b>`r format(meanperday, big.mark=",")`</b> over `r nrow(sumsteps)` days.
+- The median number of steps is <b>`r format(medianperday, big.mark=",")`</b> over `r nrow(sumsteps)` days.
+
 
 ```{r}
 # 1) Histogram without NAs in data set
@@ -151,19 +153,11 @@ The mean and median steps per day are also computed.
 hist(sumsteps$sum, main="Steps per day\n (Histogram without NAs)",ylab="Frequency", xlab="Steps", breaks=nrow(sumsteps), col="red")
 ```
 
-- The average (mean) number of steps is <b>`r format(meanperday, big.mark=",")`</b> over `r nrow(sumsteps)` days.
-- The median number of steps is <b>`r format(medianperday, big.mark=",")`</b> over `r nrow(sumsteps)` days.
 
 
 ## What is the average daily activity pattern?
 ### Weekday Activity
 There are `r nrow(sumstepsinterval)` 5-minute time intervals ranging from 0 to 2355. The x-axis corresponds to the specific interval break points found in the data set. NAs have been excluded from the computation.
-```{r}
-# 2) ####  Average steps per 5-minute time interval #################
-plot(sumstepsinterval$avgstepperday,type="l", xaxt="n",  xlab="5-minute step intervals", ylab="Avg steps per day", main="Average Daily Activity\n (NAs excluded from data set) ")
-axis(1, at=c(1,49,97,145,193,241,288), labels=c("12:00 am","4:00","8:00","12:00 pm","4:00","8:00","12:00 am"))
- 
-```
 
 - The time inteval ''`r paste(maxavgstepperday$interval,maxavgstepperday$interval+5,sep="-")`'' contains the highest average number of steps at: <b>`r round(maxavgstepperday$avgstepperday,2)`</b> per day
 
@@ -171,12 +165,23 @@ axis(1, at=c(1,49,97,145,193,241,288), labels=c("12:00 am","4:00","8:00","12:00 
 
 (note: The data contains 12 5-minute groups per hour (0-55). After reaching the 12th member of the group (interval ending in 55), the interval's hundred digit is incremented representing the current hour (i.e. The interval 100=1:00 am, 105=1:05 am ... 2355 = 11:55 pm.))
 
+```{r}
+# 2) ####  Average steps per 5-minute time interval #################
+plot(sumstepsinterval$avgstepperday,type="l", xaxt="n",  xlab="5-minute step intervals", ylab="Avg steps per day", main="Average Daily Activity\n (NAs excluded from data set) ")
+axis(1, at=c(1,49,97,145,193,241,288), labels=c("12:00 am","4:00","8:00","12:00 pm","4:00","8:00","12:00 am"))
+ 
+```
+
+
+
  
 ## Imputing missing values
-- There are <b>`r sumna`</b> missing values (NAs) in the main data set of <b>`r nrow(dfactivity)`</b> records.
+Here's a Histogram containing average step values for all NAs in original data set.NA were replaced with the average (mean) steps per interval.
 
-Create data for Histogram containing average step values for all NAs in original data set.NA were replaced with
-the average (mean) steps per interval.
+- There are <b>`r sumna`</b> missing values (NAs) in the main data set of <b>`r nrow(dfactivity)`</b> records.
+- The average (mean) number of steps is <b>`r format(meanperday3, big.mark=",")`</b> over `r nrow(sumsteps3)` days.
+- The median number of steps is <b>`r format(medianperday3, big.mark=",")`</b> over `r nrow(sumsteps3)` days.
+
 
 ```{r}
 # 3) ####  Imputing values for NAs #################################
@@ -185,11 +190,9 @@ hist(sumsteps3$sum, main="Steps per day\n (NAs replaced with imputed values)",yl
 
 ```
 
-- The average (mean) number of steps is <b>`r format(meanperday3, big.mark=",")`</b> over `r nrow(sumsteps3)` days.
-- The median number of steps is <b>`r format(medianperday3, big.mark=",")`</b> over `r nrow(sumsteps3)` days.
 
 ## Are there differences in activity patterns between weekdays and weekends?
-There were a lot more steps taken during the week than the weekend. The y-axis on
+There were a lot more steps taken during the week than on the weekend. The y-axis on
 the weekend plot uses the max average steps from the weekday data to show true
 relationship.
 
@@ -198,7 +201,7 @@ relationship.
 ##################  Plot 4 Charts ###########################################
 # 4) ####  Create Weedend & Weekday plots ##########################
 par(mfrow=c(2,1))
-par(pin=c(5,1))
+par(pin=c(5,.8))
 #First plot Weekend scaled to maximum weekday
 plot(wesumstepsinterval$avgstepperdaywe,type="l", ylim=c(0,max(wdsumstepsinterval$avgstepperdaywd)), xaxt="n",  xlab="5-minute step intervals", ylab="Avg steps per day", main="Average Weekend Daily Activity\n (NAs replaced with imputed values) ")
 axis(1, at=c(1,49,97,145,193,241,288), labels=c("12:00 am","4:00","8:00","12:00 pm","4:00","8:00","12:00 am"))
