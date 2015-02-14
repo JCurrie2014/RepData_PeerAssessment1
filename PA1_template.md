@@ -1,6 +1,6 @@
 # Reproducible Research: Peer Assessment 1
 Jerry Currie  
-2015-02-12  
+2015-02-13  
 ## Contents
 - Overview
 - Load Libraries & Version Info 
