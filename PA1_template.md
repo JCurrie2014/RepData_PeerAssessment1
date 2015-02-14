@@ -175,7 +175,7 @@ There are 288 5-minute time intervals ranging from 0 to 2355. The x-axis corresp
 
 ```r
 # 2) ####  Average steps per 5-minute time interval #################
-plot(sumstepsinterval$avgstepperday,type="l", xaxt="n",  xlab="5-minute step intervals", ylab="Avg steps per day", main="Average Daily Activity\n (NAs excluded from data set)")
+plot(sumstepsinterval$avgstepperday,type="l", xaxt="n",  xlab="5-minute step intervals", ylab="Avg steps per day", main="Average Daily Activity\n (NAs excluded from data set) ")
 axis(1, at=c(1,49,97,145,193,241,288), labels=c("12:00 am","4:00","8:00","12:00 pm","4:00","8:00","12:00 am"))
 ```
 
@@ -198,7 +198,7 @@ the average (mean) steps per interval.
 ```r
 # 3) ####  Imputing values for NAs #################################
 #histogram of steps per day using imputed values
-hist(sumsteps3$sum, main="Steps per day\n (NAs replaced with imputed values)",ylab="Frequency", xlab="Steps", breaks=nrow(sumsteps3), col="red") 
+hist(sumsteps3$sum, main="Steps per day\n (NAs replaced with imputed values)",ylab="Frequency" , xlab="Steps", breaks=nrow(sumsteps3), col="red") 
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
@@ -219,7 +219,7 @@ relationship.
 par(mfrow=c(2,1))
 par(pin=c(5,1))
 #First plot Weekend scaled to maximum weekday
-plot(wesumstepsinterval$avgstepperdaywe,type="l", ylim=c(0,max(wdsumstepsinterval$avgstepperdaywd)), xaxt="n",  xlab="5-minute step intervals", ylab="Avg steps per day", main="Average Weekend Daily Activity\n (NAs replaced with imputed values)")
+plot(wesumstepsinterval$avgstepperdaywe,type="l", ylim=c(0,max(wdsumstepsinterval$avgstepperdaywd)), xaxt="n",  xlab="5-minute step intervals", ylab="Avg steps per day", main="Average Weekend Daily Activity\n (NAs replaced with imputed values) ")
 axis(1, at=c(1,49,97,145,193,241,288), labels=c("12:00 am","4:00","8:00","12:00 pm","4:00","8:00","12:00 am"))
 #Second plot weekday
 plot(wdsumstepsinterval$avgstepperdaywd,type="l", xaxt="n",  xlab="5-minute step intervals", ylab="Avg steps per day", main="Average Weekday Daily Activity\n (NAs replaced with imputed values)")
