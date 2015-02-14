@@ -98,7 +98,8 @@ library(timeDate )# Version </code></pre>
 <div id="loading-and-preprocessing-the-data" class="section level2">
 <h2>Loading and preprocessing the data *</h2>
 <p>The only data file (activity.csv) is read into a data frame named dfactivity. An identity field is added so that merging can be easily accomplished later in the project. A second data frame is created that excludes NAs that will be used for the first section of the assignment.</p>
-<pre class="r"><code>#Read data file 
+<pre class="r"><code>echo = TRUE
+#Read data file 
 dfactivity&lt;-read.csv(&quot;activity.csv&quot;)
 dfactivity$id&lt;-1:nrow(dfactivity)    #Assign id to each row (will be used for imputing NA values)
 dfactnaf&lt;-na.omit(dfactivity) # remove NA and create data set for 1

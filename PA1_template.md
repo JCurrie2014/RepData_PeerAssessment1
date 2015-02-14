@@ -61,6 +61,7 @@ accomplished later in the project. A second data frame is created that
 excludes NAs that will be used for the first section of the assignment.
 
 ```r
+echo = TRUE
 #Read data file 
 dfactivity<-read.csv("activity.csv")
 dfactivity$id<-1:nrow(dfactivity)    #Assign id to each row (will be used for imputing NA values)
